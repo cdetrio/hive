@@ -33,14 +33,15 @@ fi
 
 if [ -f /chain.rlp ]; then
   echo "Found chain.rlp"
-  pyethapp -c eth.genesis="$genesis" $extra_config import /chain.rlp
+  pipenv pyethapp -c eth.genesis="$genesis" $extra_config import /chain.rlp
 fi
 
 if [ -d /blocks/ ]; then
   # VAST HACK! Turns out that trying to get a functioning pyethapp environment in order to import blocks
   # without actually running pyethapp is its own special form of torment. So...
   echo "from importblock import Importer; Importer(eth).run()" | \
-    pyethapp -c eth.genesis="$genesis" $extra_config run --console
+    # doesn't work with pipenv
+    pipenv pyethapp -c eth.genesis="$genesis" $extra_config run --console
 fi
 
 set -e
@@ -51,4 +52,4 @@ fi
 
 # --dev stops on error.
 
-pyethapp -c eth.genesis="$genesis" $extra_config run --dev
+pipenv pyethapp -c eth.genesis="$genesis" $extra_config run --dev
